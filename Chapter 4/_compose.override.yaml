@@ -1,0 +1,9 @@
+services:
+  api:
+    volumes:
+      - ./api:/app
+    command: ["python", "app.py"]
+
+  frontend:
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro

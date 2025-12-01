@@ -1,0 +1,19 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "5001:5000"
+    volumes:
+      - C:\notes-data:/data
+    networks:
+      - app-net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    networks:
+      - app-net
+
+networks:
+  app-net:

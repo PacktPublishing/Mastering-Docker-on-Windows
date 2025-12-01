@@ -1,0 +1,7 @@
+services:
+  api:
+    environment:
+      - ENV=production
+
+  frontend:
+    image: myorg/notes-frontend:1.0.0

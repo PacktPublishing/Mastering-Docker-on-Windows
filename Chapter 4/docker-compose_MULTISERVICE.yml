@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: appdb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  cache:
+    image: redis:alpine
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:
