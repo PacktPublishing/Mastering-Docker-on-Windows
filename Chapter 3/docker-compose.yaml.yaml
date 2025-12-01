@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  writer:
+    image: alpine
+    command: sh -c "echo 'pipeline demo' > /data/pipeline.txt; sleep 1000"
+    volumes:
+      - shared:/data
+
+  reader:
+    image: alpine
+    command: sh -c "sleep 3 && cat /data/pipeline.txt; sleep 1000"
+    volumes:
+      - shared:/data
+
+volumes:
+  shared:
