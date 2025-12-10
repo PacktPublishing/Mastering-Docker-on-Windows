@@ -1,0 +1,15 @@
+# Chapter 5 example: Using docker-socket-proxy for safer Docker API access
+services:
+  docker-proxy:
+    image: tecnativa/docker-socket-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      CONTAINERS: 1  # expose only the specific API you need
+      IMAGES: 0
+      NETWORKS: 0
+
+  job-runner:
+    image: my-ci-runner
+    environment:
+      DOCKER_HOST: tcp://docker-proxy:2375

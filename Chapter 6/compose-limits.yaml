@@ -1,0 +1,9 @@
+# docker compose example with CPU and memory limits
+services:
+  api:
+    image: my-api:latest
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M

@@ -1,0 +1,8 @@
+# Chapter 5 example: Compose with non-root user, read-only FS, dropped capabilities
+services:
+  app:
+    image: myapp:latest
+    user: "1001:1001"   # same as --user 1001:1001
+    read_only: true     # same as --read-only
+    cap_drop:
+      - ALL             # same as --cap-drop=ALL

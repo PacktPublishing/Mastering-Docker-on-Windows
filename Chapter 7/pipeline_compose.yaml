@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  ingester:
+    build: ./ingester
+    volumes:
+      - cleaned-data:/data
+
+  transformer:
+    build: ./transformer
+    volumes:
+      - cleaned-data:/data:ro
+      - transformed-data:/out
+
+  model:
+    image: genai-model:latest
+    volumes:
+      - transformed-data:/input:ro
+    depends_on:
+      - transformer
+
+volumes:
+  cleaned-data:
+  transformed-data:

@@ -1,0 +1,81 @@
+# Chapter 5 Command Cheat Sheet
+
+## User and permissions
+docker run --rm alpine id
+Shows default user.
+
+docker run --rm --user 1001:1001 alpine id
+Runs container as non-root.
+
+docker run --rm nginx whoami
+Check default nginx user.
+
+docker run --rm --user 1001 nginx whoami
+Run nginx as UID 1001.
+
+docker run --rm --read-only nginx
+Start container with read-only FS.
+
+docker run --rm --cap-drop=ALL --cap-add=NET_BIND_SERVICE nginx
+Drop all capabilities and add one back.
+
+docker exec <container> whoami
+Print running user inside container.
+
+docker exec <container> id
+Show UID/GID inside container.
+
+docker inspect <container>
+Inspect container metadata.
+
+## Image scanning
+choco install trivy
+Install scanner.
+
+trivy image mcr.microsoft.com/dotnet/framework/runtime:4.8
+Scan Windows base image.
+
+trivy image node:18-alpine
+Scan Linux image.
+
+trivy image --quiet --severity HIGH,CRITICAL
+Show only severe issues.
+
+trivy config .
+Scan config files for issues.
+
+## Namespaces
+docker run --rm --network host nginx
+Share host network.
+
+docker run --rm --pid host alpine ps aux
+Share host PID namespace.
+
+docker run --rm --uts host alpine hostname
+Share host hostname.
+
+docker info | Select-String userns
+Check if userns remap is enabled.
+
+## Monitoring
+docker ps
+List running containers.
+
+docker stats
+Live container metrics.
+
+docker logs <container>
+View logs.
+
+docker inspect <container>
+Full container details.
+
+docker events
+Stream engine events.
+
+docker events --since 10m --filter container=my-container
+Filter events.
+
+## WSL checks
+wsl --status
+Show WSL resource configuration.

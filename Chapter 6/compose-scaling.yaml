@@ -1,0 +1,10 @@
+# docker compose example using replicas (Swarm-style)
+services:
+  api:
+    image: my-api:latest
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M

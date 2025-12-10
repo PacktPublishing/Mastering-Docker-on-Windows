@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  summariser:
+    image: registry.mycorp.com/genai/summariser:1.0
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 2g
+    environment:
+      - MODEL_PATH=/models/summariser.onnx
+    secrets:
+      - openai_key
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      retries: 3
+    restart: always
+    user: appuser
+    networks:
+      - genai_net
+
+  orchestrator:
+    build:
+      context: ./orchestrator
+      target: runtime
+    ports:
+      - "8080:8080"
+    depends_on:
+      summariser:
+        condition: service_healthy
+    secrets:
+      - db_password
+    user: appuser
+    networks:
+      - genai_net
+
+secrets:
+  openai_key:
+    file: ./secrets/openai_key.txt
+  db_password:
+    file: ./secrets/db_password.txt
+
+networks:
+  genai_net:
+    driver: bridge

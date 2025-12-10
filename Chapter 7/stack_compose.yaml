@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  model-server:
+    build:
+      context: ./model-server
+    ports:
+      - "8000:8000"
+    depends_on:
+      - preprocessor
+    networks:
+      - genai-net
+
+  preprocessor:
+    build:
+      context: ./preprocessor
+    ports:
+      - "8001:8001"
+    networks:
+      - genai-net
+
+  logger:
+    build:
+      context: ./logger
+    ports:
+      - "8002:8002"
+    networks:
+      - genai-net
+
+networks:
+  genai-net:

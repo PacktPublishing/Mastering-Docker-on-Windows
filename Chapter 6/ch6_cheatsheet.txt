@@ -1,0 +1,149 @@
+# Chapter 6 – Monitoring and Fine‑Tuning Performance
+
+
+1. Container Performance Inspection
+
+### Show live CPU, memory, network and I/O usage
+docker stats
+Explanation: Streams real‑time metrics for all running containers. Your first stop when something feels slow.
+
+### Show detailed container configuration and current state
+docker inspect <container>
+Explanation: Returns full JSON including resource limits, mounts, networking and runtime settings.
+
+### Check just resource limits applied to a container
+docker inspect <container> --format '{{json .HostConfig.Resources}}'
+Explanation: Shows CPU/memory limits actually applied at runtime.
+
+---
+
+## 2. Disk, Image and Volume Usage
+
+### Show Docker disk usage summary
+docker system df
+Explanation: Displays how much space images, containers, volumes and build cache use.
+
+### Remove unused images, containers and cache (safe)
+docker system prune
+Explanation: Cleans up unused resources. Won’t remove running containers.
+
+---
+
+## 3. Event‑Level Monitoring
+
+### Stream Docker engine lifecycle events
+docker events
+Explanation: Shows create, start, stop, kill, health events and networking changes.
+
+### Filter live events for a single container
+docker events --filter container=<container>
+Explanation: Limits output to just one container to debug its behaviour.
+
+---
+
+## 4. Measuring Startup Time
+
+### Manually time container startup
+START=$(date +%s); docker run --rm <image>; END=$(date +%s); echo $((END-START))
+Explanation: Simple Linux shell one‑liner to quantify cold‑start time.
+
+---
+
+## 5. Image Size & Layer Analysis
+
+### Show image layers and their sizes
+docker history <image>
+Explanation: Helps identify bloated build steps.
+
+### Remove dangling build cache
+docker builder prune
+Explanation: Frees space used by unused intermediate layers.
+
+---
+
+## 6. Build Optimisation Commands
+
+### Build without using cache
+docker build --no-cache -t myapp .
+Explanation: Ensures a clean build to test actual layer behaviour.
+
+### Build with build‑kit enabled
+DOCKER_BUILDKIT=1 docker build -t myapp .
+Explanation: Enables modern build optimisations and better caching.
+
+---
+
+## 7. Resource Limits & Control
+
+### Run a container with a strict memory cap
+docker run -m 512m <image>
+Explanation: Hard memory limit. Exceeding it triggers OOM.
+
+### Add CPU quota to a container
+docker run --cpus="1.0" <image>
+Explanation: Limits container to one CPU core’s worth of compute.
+
+### Compose equivalent for CPU/memory limits
+docker compose up
+(Defined in compose-limits.yaml)
+Explanation: These limits enforce predictable performance under load.
+
+---
+
+## 8. Scaling Commands
+
+### Scale services using Compose (Swarm mode)
+docker compose up --scale api=3
+Explanation: Creates multiple replicas of a single service behind the Compose-managed network.
+
+---
+
+## 9. WSL2 Monitoring and Troubleshooting
+
+### Show overall WSL configuration
+wsl --status
+Explanation: Confirms memory limits, version and distro config.
+
+### Restart WSL engine
+wsl --shutdown
+Explanation: Fully resets WSL VM, clearing memory and stale processes.
+
+---
+
+## 10. Windows Performance Tools
+
+(These are UI‑based, but included for completeness.)
+
+### Open Resource Monitor
+resmon.exe
+Explanation: Inspect CPU, memory, disk and network spikes attributed to WSL.
+
+### Open Performance Monitor
+perfmon.exe
+Explanation: Windows‑side deep inspection of long‑running performance patterns.
+
+---
+
+## 11. Monitoring Tools Inside the Stack
+
+### Add cAdvisor to the Compose stack
+(See compose-cadvisor.yaml)
+docker compose up -d
+Explanation: Starts a live metrics dashboard at http://localhost:8081.
+
+### Exec into cAdvisor for volume analysis
+docker compose exec monitoring sh
+ls -lah /var/lib/docker/volumes
+Explanation: Confirms cAdvisor can observe disk I/O patterns.
+
+---
+
+## 12. Validating End‑to‑End Behaviour
+
+### Hit your API to generate load
+curl http://localhost:5001/notes
+Explanation: Adds predictable API traffic for testing responsiveness.
+
+### Refresh frontend to simulate UI traffic
+Open browser at: http://localhost:8080
+Explanation: Generates static‑file load for Nginx/frontend container.

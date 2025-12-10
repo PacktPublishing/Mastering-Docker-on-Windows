@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  summariser:
+    build: ./summariser
+    ports:
+      - "8001:8000"
+    networks: [genai_net]
+    deploy:
+      replicas: 2
+    environment:
+      - MODEL_PATH=/models/summariser.onnx
+
+  classifier:
+    build: ./classifier
+    ports:
+      - "8002:8000"
+    networks: [genai_net]
+    environment:
+      - MODEL_PATH=/models/classifier.onnx
+
+  embedder:
+    build: ./embedder
+    ports:
+      - "8003:8000"
+    networks: [genai_net]
+    environment:
+      - MODEL_PATH=/models/embedder.onnx
+
+  orchestrator:
+    build: ./orchestrator
+    ports:
+      - "8080:8000"
+    depends_on:
+      - summariser
+      - classifier
+      - embedder
+    networks: [genai_net]
+
+networks:
+  genai_net:
+    driver: bridge

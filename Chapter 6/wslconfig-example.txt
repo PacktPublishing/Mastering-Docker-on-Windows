@@ -1,0 +1,6 @@
+# Example .wslconfig for limiting WSL2 resources
+[wsl2]
+memory=4GB
+processors=4
+swap=8GB
+localhostForwarding=true
