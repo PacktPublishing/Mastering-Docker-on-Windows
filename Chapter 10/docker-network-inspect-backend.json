@@ -1,0 +1,41 @@
+[
+  {
+    "Name": "backend",
+    "Id": "7c1f98df2b3c5d8d2484c41e50a4c9e4afba7e20fb89a3f2ee12af17df3",
+    "Created": "2025-11-14T09:10:22.123456789Z",
+    "Scope": "local",
+    "Driver": "bridge",
+    "IPAM": {
+      "Driver": "default",
+      "Config": [
+        {
+          "Subnet": "10.0.3.0/24",
+          "Gateway": "10.0.3.1"
+        }
+      ]
+    },
+    "Containers": {
+      "c82afba13d9fdd12e41b487af2911c327c2e3a55b7ee3cf46d2b8e1b33216c": {
+        "Name": "worker",
+        "EndpointID": "4de82d939f0b5a1277c9f2e57a8b4620c9d8ec5b0e238cbaf18ac3b108e2e",
+        "MacAddress": "02:42:0a:00:03:05",
+        "IPv4Address": "10.0.3.5/24",
+        "IPv6Address": ""
+      },
+      "f39ac417d75c1a819bf2fbc11c572bd450f06f3b491fe8ce18932a0c93d34ab": {
+        "Name": "redis",
+        "EndpointID": "59cfe7397c2a83c9a44c572cc3d2a51106d44716b69226638a85c0384cb49ef",
+        "MacAddress": "02:42:0a:00:03:06",
+        "IPv4Address": "10.0.3.6/24",
+        "IPv6Address": ""
+      },
+      "stale-endpoint-12cf": {
+        "Name": "api_old_1",
+        "EndpointID": "",
+        "MacAddress": "",
+        "IPv4Address": "",
+        "IPv6Address": ""
+      }
+    }
+  }
+]

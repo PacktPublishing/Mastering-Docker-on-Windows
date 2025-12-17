@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
+COPY . /inetpub/wwwroot
+RUN powershell -Command `
+ Import-Module WebAdministration; `
+ New-Website -Name "EnterpriseApp" -PhysicalPath "C:\inetpub\wwwroot" -Port 80

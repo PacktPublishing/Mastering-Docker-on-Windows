@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  enterprise-app:
+    image: enterprise-app:1.0.0
+    volumes:
+      - enterprise-data:/data
+
+volumes:
+  enterprise-data:

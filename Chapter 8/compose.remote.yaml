@@ -1,0 +1,54 @@
+services:
+  api:
+    image: yourname/notes-api:8.0
+    ports:
+      - "5001:5000"
+    env_file:
+      - api.secrets
+    environment:
+      - GENAI_URL=http://genai-gateway/summarise
+    volumes:
+      - notes-data:/data
+    networks:
+      - app-net
+      - api-private
+
+  frontend:
+    image: yourname/notes-frontend:8.0
+    ports:
+      - "8080:80"
+    networks:
+      - app-net
+    read_only: true
+
+  genai-a:
+    image: yourname/notes-genai-summariser:8.0
+    networks:
+      - api-private
+      - app-net
+
+  genai-b:
+    image: yourname/notes-genai-summariser:8.0
+    networks:
+      - api-private
+      - app-net
+
+  genai-gateway:
+    image: nginx:alpine
+    container_name: notes-genai-gateway
+    volumes:
+      - ./nginx-genai/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "5002:80"
+    depends_on:
+      - genai-a
+      - genai-b
+    networks:
+      - app-net
+
+volumes:
+  notes-data:
+
+networks:
+  app-net:
+  api-private:

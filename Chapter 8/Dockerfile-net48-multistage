@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/dotnet/framework/sdk:4.8 AS build-env
+WORKDIR /app
+COPY . .
+RUN msbuild /p:Configuration=Release
+
+FROM mcr.microsoft.com/dotnet/framework/runtime:4.8
+COPY --from=build-env /app/bin/Release /inetpub/wwwroot

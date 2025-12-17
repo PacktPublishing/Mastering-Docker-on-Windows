@@ -1,0 +1,16 @@
+{
+  "Networks": {
+    "frontend": {
+      "IPAMConfig": {},
+      "Links": null,
+      "Aliases": ["api", "api_1"],
+      "NetworkID": "8f3c9d1c2a4a"
+    },
+    "bridge": {
+      "IPAMConfig": null,
+      "Links": null,
+      "Aliases": ["api"],
+      "NetworkID": "3b19a8d0f6b1"
+    }
+  }
+}
