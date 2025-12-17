@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    environment:
+      - ENVIRONMENT=production

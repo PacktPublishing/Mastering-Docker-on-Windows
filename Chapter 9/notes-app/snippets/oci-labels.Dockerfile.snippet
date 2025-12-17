@@ -1,0 +1,5 @@
+# Add near the top of your Dockerfile (after FROM) to embed provenance metadata.
+ARG VCS_REF=""
+ARG BUILD_DATE=""
+
+LABEL org.opencontainers.image.source="https://github.com/<your-org>/<your-repo>" org.opencontainers.image.revision="${VCS_REF}" org.opencontainers.image.created="${BUILD_DATE}"

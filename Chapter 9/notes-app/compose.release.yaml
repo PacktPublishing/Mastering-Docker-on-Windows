@@ -1,0 +1,52 @@
+services:
+  api:
+    image: ${IMAGE_API}
+    ports:
+      - "5001:5000"
+    environment:
+      - GENAI_URL=http://genai-gateway/summarise
+    networks:
+      - app-net
+      - api-private
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/notes')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    image: ${IMAGE_FRONTEND}
+    ports:
+      - "8080:80"
+    networks:
+      - app-net
+    read_only: true
+
+  genai-a:
+    image: ${IMAGE_GENAI}
+    networks:
+      - api-private
+      - app-net
+
+  genai-b:
+    image: ${IMAGE_GENAI}
+    networks:
+      - api-private
+      - app-net
+
+  genai-gateway:
+    image: nginx:alpine
+    container_name: notes-genai-gateway
+    volumes:
+      - ./nginx-genai/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "5002:80"
+    depends_on:
+      - genai-a
+      - genai-b
+    networks:
+      - app-net
+
+networks:
+  app-net:
+  api-private:

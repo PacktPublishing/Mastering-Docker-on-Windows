@@ -1,0 +1,11 @@
+# Optional: add after push to sign images  
+- name: Install Cosign
+  uses: sigstore/cosign-installer@v3.6.0
+
+- name: Sign images (keyless)
+  env:
+    COSIGN_EXPERIMENTAL: "true"
+  run: |
+    cosign sign --yes $NAMESPACE/notes-api:$VERSION
+    cosign sign --yes $NAMESPACE/notes-frontend:$VERSION
+    cosign sign --yes $NAMESPACE/notes-genai-summariser:$VERSION
